@@ -1,0 +1,84 @@
+\newpage
+
+
+\section{Постановка задачи}
+Задана выборка 
+\begin{equation} \label{task.1} 
+\mathfrak{D} = \{\mathbf{x}_i, y_i\}, \quad i = 1, \ldots, N,
+\end{equation}
+где $\mathbf{x}_i \in \mathbb{R}^m$, $y_i \in \{1, \ldots, Y\}$, $Y$ -- число классов. Рассмотрим модель $f(\mathbf{x}, \mathbf{w}): \mathbb{R}^m \times \mathbb{R}^n \to \{1, \ldots, Y\}$, где $\mathbf{w} \in \mathbb{R}^n$ -- пространство параметров модели,
+\begin{equation} \label{task.2} 
+f(\mathbf{x}, \mathbf{w}) = \softmax \big(f_1(f_2(\ldots(f_l(\mathbf{x}, \mathbf{w})\big),
+\end{equation}
+где $f_k(\mathbf{x}, \mathbf{w}) = \tanh(\mathbf{w}^{\mathsf{T}}\mathbf{x})$, $l$ -- число слоев нейронной сети, $k \in \{1, \ldots, l\}$. 
+
+Параметр $w_i$ модели $f$ называется активным, если $w_i \neq 0$. Множество индексов активных параметров обозначим $\mathcal{A} \subset \mathcal{J} = \{1, \ldots, n\}$. Задано пространство параметров модели:
+\begin{equation} \label{task.3} 
+\mathbb{W}_{\mathcal{A}} = \{\mathbf{w} \in \mathbb{R}^n \mid w_j \neq 0, \hspace{5pt} j \in \mathcal{A}\}.
+\end{equation}
+
+Для модели $f$ с множеством индексов активных параметров $\mathcal{A}$ и соответствующего ей вектора параметров $\mathbf{w} \in \mathbb{W}_{\mathcal{A}}$ определим логарифмическую функцию правдоподобия выборки:
+\begin{equation} \label{task.4} 
+\mathcal{L}_{\mathfrak{D}}(\mathfrak{D}, \mathcal{A}, \mathbf{w}) = \log p(\mathfrak{D} \mid \mathcal{A}, \mathbf{w}), 
+\end{equation}
+где $p(\mathfrak{D} \mid \mathcal{A}, \mathbf{w})$ -- апостериорная вероятность выборки $\mathfrak{D}$ при заданных $\mathbf{w}$, $\mathbf{A}$. Оптимальные значения $\mathbf{w}$, $\mathbf{A}$ находятся из минимизации $-\mathcal{L}_{\mathcal{A}}(\mathfrak{D}, \mathcal{A})$ -- логарифма правдоподобия модели:
+\begin{equation} \label{task.5} 
+\mathcal{L}_{\mathcal{A}}(\mathfrak{D}, \mathcal{A}) = \log p(\mathfrak{D} \mid \mathcal{A}) = \log \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} p(\mathfrak{D} \mid \mathbf{w})p(\mathbf{w} \mid \mathcal{A}) d \mathbf{w},
+\end{equation}
+где $p(\mathbf{w} \mid \mathcal{A})$ -- априорная вероятность вектора параметров в пространстве $\mathbb{W}_{\mathcal{J}}$.
+
+Так как вычисление интеграла \ref{task.5} является вычислительно сложной задачей, рассмотрим вариационный подход \cite{Bishop2006} для решения этой задачи. Пусть задано распределение $q$:
+\begin{equation} \label{task.6}
+q(\mathbf{w}) \sim \Lap(\mbox{\boldmath$\mu$}, \mbox{\boldmath$\Sigma$}), 
+\end{equation}
+где $\mbox{\boldmath$\mu$}, \mbox{\boldmath$\Sigma$}$ -- вектор средних и матрица ковариации, апроксимирующие неизвестное апостериорное распределение $p(\mathbf{w} \mid \mathfrak{D}, \mathcal{A})$, полученное при априорном предположении:
+\begin{equation} \label{task.7}
+p(\mathbf{w} \mid \mathcal{A}) \sim \Lap(\mathbf{m}, \mbox{\boldmath$\Theta$}),
+\end{equation}
+где $\mathbf{m}, \mbox{\boldmath$\Theta$}$ -- вектор средних и матрица ковариации априорного распределения.
+
+Приблизим интеграл \ref{task.5} методом, предложенным в \cite{Bishop2006}:
+\[
+\label{task.8}
+\begin{aligned}
+\mathcal{L}_{\mathcal{A}}(\mathfrak{D}, \mathcal{A}) = \log p(\mathfrak{D} \mid \mathcal{A}) = 
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+= \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} q(\mathbf{w}) \log \frac{p(\mathfrak{D}, \mathbf{w} \mid \mathcal{A})}{q(\mathbf{w})} d \mathbf{w} - \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} q(\mathbf{w}) \log \frac{p(\mathbf{w} \mid \mathfrak{D}, \mathcal{A})}{q(\mathbf{w})} d \mathbf{w} \approx 
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+\approx \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} q(\mathbf{w}) \log \frac{p(\mathfrak{D}, \mathbf{w} \mid \mathcal{A})}{q(\mathbf{w})} d \mathbf{w} =
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+= \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} q(\mathbf{w}) \log \frac{p(\mathbf{w} \mid \mathcal{A})}{q(\mathbf{w})} d \mathbf{w} + \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} q(\mathbf{w}) \log p(\mathfrak{D} \mid \mathbf{w}, \mathcal{A}) d \mathbf{w} = 
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+= \mathcal{L}_{\mathbf{w}}(\mathfrak{D}, \mathcal{A}, \mathbf{w}) + \mathcal{L}_{E}(\mathfrak{D}, \mathcal{A}).
+\end{aligned}
+\]
+
+Первое слагаемое формулы \ref{task.8} -- это сложность модели. Оно определяется расстоянием Кульбака-Лейблера:
+\begin{equation} \label{task.9}
+\mathcal{L}_{\mathbf{w}}(\mathfrak{D}, \mathcal{A}, \mathbf{w}) = -D_{\KL}(q(\mathbf{w}) \parallel p(\mathbf{w} \mid \mathcal{A})).
+\end{equation}
+Второе слагаемое формулы \ref{task.8} является матожиданием правдоподобия выборки $\mathcal{L}_{\mathfrak{D}}(\mathfrak{D}, \mathcal{A}, \mathbf{w})$. В данной работе оно является функцией ошибки:
+\begin{equation} \label{task.10}
+\mathcal{L}_{E}(\mathfrak{D}, \mathcal{A}) = \mathsf{E}_{\mathbf{w} \sim q} \mathcal{L}_{\mathfrak{D}}(\mathbf{y}, \mathfrak{D}, \mathcal{A}, \mathbf{w}).
+\end{equation}
+
+Требуется найти параметры, доставляющие минимум суммарному функционалу потерь $\mathcal{L}_{\mathcal{A}}(\mathfrak{D}, \mathcal{A})$ из \ref{task.8}:
+\begin{equation} \label{task.11}
+\hat{\mathbf{w}} = \underset{\mathcal{A} \subset \mathcal{J}, \mathbf{w \in \mathbb{W}_{\mathcal{A}}}} \argmin - \mathcal{L}_{\mathcal{A}}(\mathfrak{D}, \mathcal{A}) = \underset{\mathcal{A} \subset \mathcal{J}, \mathbf{w \in \mathbb{W}_{\mathcal{A}}}} \argmin D_{\KL}(q(\mathbf{w}) \parallel p(\mathbf{w} \mid \mathcal{A})) - \mathcal{L}_{\mathfrak{D}}(\mathfrak{D}, \mathcal{A}, \mathbf{w}).
+\end{equation}

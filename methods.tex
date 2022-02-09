@@ -1,0 +1,63 @@
+\newpage
+
+\section{Предлагаемый метод анализа распределения параметров нейросети}
+В качестве априорного распределения параметров $\mathbf{w}$ рассмотрим $k$-мерное распределение Лапласа $\Lap$ с плотностью распределения:
+\begin{equation} \label{methods.1}
+f(\mathbf{x}) = \frac{2e^{\mathbf{x}^{\mathsf{T}}\mbox{\boldmath$\Sigma^{-1}$}\mbox{\boldmath$\mu$}}}{(2\pi)^{\frac{k}{2}}|\mbox{\boldmath$\Sigma$}|^{0,5}} \left( \frac{\mathbf{x}^{\mathsf{T}}\mbox{\boldmath$\Sigma^{-1}$}\mathbf{x}}{2 + \mbox{\boldmath$\mu$}^{\mathsf{T}}\mbox{\boldmath$\Sigma^{-1}$}\mbox{\boldmath$\mu$}} \right)^{\frac{v}{2}} K_v \left( \sqrt{(2 + \mbox{\boldmath$\mu$}^{\mathsf{T}}\mbox{\boldmath$\Sigma^{-1}$}\mbox{\boldmath$\mu$})(\mathbf{x}^{\mathsf{T}}\mbox{\boldmath$\Sigma^{-1}$}\mathbf{x})} \right),
+\end{equation}
+где $\mbox{\boldmath$\mu$} \in \mathbb{R}^k$ -- математичекое ожидание, $\mbox{\boldmath$\Sigma$} \in \mathbb{R}^{k \times k}$ -- матрица ковариации, $v = (2-k)/2$ и $K_v$ -- модифицированная функция Бесселя второго рода.
+
+Рассмотрим случай, когда $k = 2$, $\mathbf{m} = \mathbf{0}$, а матрицы $\mbox{\boldmath$\Theta$}$ и $\mbox{\boldmath$\Sigma$}$ диаганальны. В таком случае плотность распределения $p(\mathbf{w} \mid \mathcal{A}) \sim \Lap(\mathbf{m}, \mbox{\boldmath$\Theta$}) \sim \Lap(\mathbf{0}, \mbox{\boldmath$\Theta$})$ будет иметь вид:
+\begin{equation} \label{methods.2}
+f(\mathbf{x}) = \frac{2}{(2\pi)^{\frac{k}{2}}|\mbox{\boldmath$\Theta$}|^{0,5}} K_0 \left( \sqrt{2 \mathbf{x}^{\mathsf{T}}\mbox{\boldmath$\Theta^{-1}$}\mathbf{x}} \right).
+\end{equation}
+
+Рассмотрим несколько случаев:
+\begin{enumerate}
+\item Пусть вектор параметров мал по норме, такой, что:
+\begin{equation} \label{methods.3}
+||\mathbf{w}|| \lesssim \frac{2}{||\mbox{\boldmath$\Sigma$}||}.
+\end{equation}
+В таком случае можно использовать аппроксимацию функции Бесселя \cite{Temme1975}:
+\begin{equation} \label{methods.4}
+K_v(x) \simeq \frac{\Gamma(v)}{2} \left( \frac{2}{x} \right)^v \Rightarrow K_0(x) \sim \frac{\Gamma(0)}{2} \sim \const.
+\end{equation}
+Тогда можно оценить:
+\[
+\label{methods.5}
+\begin{aligned}
+D_{\KL}(q(\mathbf{w}) \parallel p(\mathbf{w} \mid \mathcal{A})) = \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} q(\mathbf{w}) \log \frac{p(\mathbf{w} \mid \mathcal{A})}{q(\mathbf{w})} d \mathbf{w} = 
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+= \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} q(\mathbf{w}) \log p(\mathbf{w} \mid \mathcal{A}) q(\mathbf{w}) d \mathbf{w} - \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} q(\mathbf{w}) \log q(\mathbf{w}) d \mathbf{w} \sim
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+\sim \int_{\mathbf{w \in \mathbb{W}_{\mathcal{J}}}} \frac{e^{\mathbf{w}^{\mathsf{T}}\mbox{\boldmath$\Sigma^{-1}$}\mbox{\boldmath$\mu$}}}{|\mbox{\boldmath$\Sigma$}|^{0,5}} K_0 \left( \sqrt{(2 + \mbox{\boldmath$\mu$}^{\mathsf{T}}\mbox{\boldmath$\Sigma^{-1}$}\mbox{\boldmath$\mu$})(\mathbf{w}^{\mathsf{T}}\mbox{\boldmath$\Sigma^{-1}$}\mathbf{w})} \right) \log \frac{1}{|\mbox{\boldmath$\Sigma$}|^{0,5}} \left(  K_0 \left( \sqrt{\mathbf{w}^{\mathsf{T}}\mbox{\boldmath$\Theta^{-1}$}\mathbf{w}} \right) \right) d \mathbf{w} -
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+1
+\end{aligned}
+\]
+
+\item Пусть норма вектора параметров большая:
+\begin{equation} \label{methods.3}
+||\mathbf{w}|| \sim ?????.
+\end{equation}
+Тогда функцию Бесселя можно аппроксимировать следующим образом [ссылка на https://dlmf.nist.gov/10.40]:
+\begin{equation} \label{methods.3}
+K_v(x) \simeq \left( \frac{\pi}{2x}\right)^{\frac{1}{2}}e^{-x} \sum \limits_{n=0}^{\infty} \frac{a_n(v)}{x^n} \Rightarrow K_0(x) \sim \frac{e^{-x}}{\sqrt{x}} \sum \limits_{n=0}^{10} \frac{a_n(0)}{x^n}.
+\end{equation}
+В этом случае можно получить следующую оценку:
+\[1\] 
+\end{enumerate}
+
+
